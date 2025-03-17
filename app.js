@@ -1,26 +1,17 @@
-window.onload = function(){
-  const dialog = document.querySelector('#error-msg');
-  const form = document.querySelector('#myPaymentForm');
-  const submitButton = document.querySelector("#sendForm");
-  const resetButton = document.querySelector("#resetForm");
-  const fields = document.querySelectorAll('input:not([type="submit"]):not([type="reset"]), textarea, select');
-  dialog.classList.add("d-none");
-  submitButton.addEventListener("click", function(e){ 
-    if (!form.checkValidity()) { 
-      e.preventDefault(); 
-      dialog.classList.remove("d-none");
-      fields.forEach(function(field){
-        field.style.backgroundColor = "#f8d7da";
-      });
-    }
+document.addEventListener('DOMContentLoaded', () => {
+  // Fetch all the forms we want to apply custom Bootstrap validation to
+  const forms = document.querySelectorAll('.needs-validation');
+  
+  // Loop over them and prevent submission if invalid
+  Array.prototype.slice.call(forms).forEach(form => {
+    form.addEventListener('submit', event => {
+      if (!form.checkValidity()) {
+        // Prevent actual form submission
+        event.preventDefault();
+        event.stopPropagation();
+      }
+      // Add Bootstrap's 'was-validated' class to trigger styling
+      form.classList.add('was-validated');
+    }, false);
   });
-  resetButton.addEventListener("click", function(e){ 
-    form.reset();
-    form.classList.remove("was-validated");
-    dialog.classList.add("d-none");
-    fields.forEach(function(field) {
-      field.style.backgroundColor = "";
-    });
-  });
-
-}
+});
